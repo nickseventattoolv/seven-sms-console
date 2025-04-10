@@ -1,18 +1,38 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { supabase } from '@/utils/supabaseClient';
 import Matrix from './components/Matrix.js';
 
 export default function Home() {
+  const router = useRouter();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [phone, setPhone] = useState('');
   const [messageType, setMessageType] = useState('Appointment Reminder');
   const [sent, setSent] = useState(false);
 
-  const handleSend = () => {
+  useEffect(() => {
+    const getSession = async () => {
+      const { data, error } = await supabase.auth.getSession();
+      if (!data?.session) {
+        router.push('/login');
+      } else {
+        setUser(data.session.user);
+        setLoading(false);
+      }
+    };
+    getSession();
+  }, [router]);
+
+  const handleSend = async () => {
     console.log(`Sending "${messageType}" to ${phone}`);
     setSent(true);
     setTimeout(() => setSent(false), 3000);
   };
+
+  if (loading) return null;
 
   return (
     <>
@@ -70,6 +90,8 @@ export default function Home() {
             <option>Appointment Reminder</option>
             <option>Healing Follow-up</option>
             <option>We Miss You</option>
+            <option>Thank You</option>
+            <option>Confirmation</option>
           </select>
 
           <label style={{ display: 'block', marginBottom: '.5rem', fontWeight: 'bold' }}>
@@ -115,3 +137,4 @@ export default function Home() {
     </>
   );
 }
+
