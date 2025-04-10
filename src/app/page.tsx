@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/utils/supabaseClient';
+import { supabase } from '../utils/supabaseClient';
 import Matrix from './components/Matrix.js';
 
 export default function Home() {
