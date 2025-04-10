@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Matrix from '../components/Matrix.js';
+import Matrix from './components/Matrix.js';
 
 export default function Home() {
   const [phone, setPhone] = useState('');
