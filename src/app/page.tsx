@@ -6,7 +6,7 @@ import { supabase } from '@/utils/supabaseClient';
 import Matrix from './components/Matrix';
 
 export default function Home() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<any>(null);
   const [phone, setPhone] = useState('');
   const [messageType, setMessageType] = useState('Appointment Reminder');
   const [sending, setSending] = useState(false);
@@ -35,17 +35,17 @@ export default function Home() {
     const res = await fetch('/api/send', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone, messageType, user }),
+      body: JSON.stringify({ phone, messageType, userId: user }),
     });
 
     const data = await res.json();
     setSending(false);
 
-    if (res.ok) {
-      alert('SMS sent!');
-      setPhone('');
-    } else {
+    if (!res.ok) {
       alert(`Failed to send SMS: ${data.error || 'Unknown error'}`);
+    } else {
+      alert('✅ SMS sent!');
+      setPhone('');
     }
   };
 
