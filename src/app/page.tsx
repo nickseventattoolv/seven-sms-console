@@ -1,149 +1,98 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '../utils/supabaseClient';
-import Matrix from './components/Matrix.js';
-import type { User } from '@supabase/supabase-js';
+import { supabase } from '@/utils/supabaseClient';
 
 export default function Home() {
-  const router = useRouter();
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [phoneNumber, setPhoneNumber] = useState('');
   const [selectedType, setSelectedType] = useState('Appointment Reminder');
-  const [sent, setSent] = useState(false);
+  const [phone, setPhone] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
-    const getSession = async () => {
+    const checkUser = async () => {
       const { data } = await supabase.auth.getSession();
       if (!data.session) {
         router.push('/login');
       } else {
         setUser(data.session.user);
-        setLoading(false);
       }
     };
-    getSession();
+    checkUser();
   }, [router]);
 
   const sendSMS = async () => {
-    if (!selectedType || !phoneNumber) return;
+    if (!phone || !selectedType) return alert('Please fill in all fields');
 
-    try {
-      const response = await fetch('/api/send', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: phoneNumber, type: selectedType }),
-      });
+    setLoading(true);
 
-      const result = await response.json();
+    const messageMap = {
+      'Appointment Reminder':
+        'Hi, this is Seven Tattoo Studio. Just a reminder about your upcoming appointment tomorrow. Text us if you have any questions!',
+      'Healing Follow-up':
+        'Hi, this is Seven Tattoo Studio. We hope you loved your tattoo! If you have any healing questions, feel free to reach out.',
+      'We Miss You':
+        'Hi, this is Seven Tattoo Studio. It’s been a while! If you’re thinking about your next piece, we’d love to help.',
+      'Thank You':
+        'Hi, this is Seven Tattoo Studio. Thank you again for coming in. We appreciate your trust in our team!',
+      'Confirmation':
+        'Hi, this is Seven Tattoo Studio. Just confirming your upcoming appointment is officially locked in. See you soon!'
+    };
 
-      if (result.success && user) {
-        // ✅ Log the sent message to Supabase
-        const { error } = await supabase.from('sms_logs').insert([
-          {
-            phone: phoneNumber,
-            message_type: selectedType,
-            sent_by: user.id,
-          },
-        ]);
+    const message = messageMap[selectedType];
 
-        if (error) {
-          console.error('Supabase log error:', error.message);
-        } else {
-          console.log('📩 SMS log saved to Supabase');
-        }
+    const user = await supabase.auth.getUser();
+    const userId = user.data.user?.id;
 
-        setSent(true);
-        setTimeout(() => setSent(false), 3000);
-      } else {
-        console.error('Twilio send failed:', result.error);
-      }
-    } catch (err) {
-      console.error('Error sending SMS:', err);
+    const res = await fetch('/api/send', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        phone,
+        messageType: selectedType,
+        message,
+        userId
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      alert('SMS sent successfully!');
+      setPhone('');
+      setSelectedType('Appointment Reminder');
+    } else {
+      alert('Failed to send SMS: ' + data.error);
     }
+
+    setLoading(false);
   };
 
-  if (loading) return null;
+  const logout = async () => {
+    await supabase.auth.signOut();
+    router.push('/login');
+  };
 
   return (
-    <>
-      <Matrix />
-
-      {/* Log Out Button */}
+    <div className="flex items-center justify-center h-screen">
       <button
-        onClick={async () => {
-          await supabase.auth.signOut();
-          window.location.href = '/login';
-        }}
-        style={{
-          position: 'absolute',
-          top: 20,
-          right: 20,
-          backgroundColor: '#000',
-          color: '#fff',
-          padding: '10px 20px',
-          borderRadius: '8px',
-          fontWeight: 'bold',
-          cursor: 'pointer',
-          zIndex: 1001,
-          border: '2px solid white',
-        }}
+        onClick={logout}
+        className="absolute top-5 right-5 bg-white text-black px-4 py-1 rounded"
       >
         Log Out
       </button>
-
-      {/* Console Box */}
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          backgroundColor: 'rgba(0,0,0,0.9)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 999,
-        }}
-      >
-        <div
-          style={{
-            backgroundColor: '#ffffff',
-            color: '#000000',
-            padding: '2rem',
-            borderRadius: '12px',
-            width: '400px',
-            boxShadow: '0px 20px 50px rgba(0,0,0,0.6)',
-            zIndex: 1000,
-          }}
-        >
-          <h1
-            style={{
-              fontSize: '1.5rem',
-              fontWeight: 'bold',
-              textAlign: 'center',
-              marginBottom: '1rem',
-            }}
-          >
-            💬 Seven Tattoo Studio SMS Console
-          </h1>
-
-          <label style={{ display: 'block', marginBottom: '.5rem', fontWeight: 'bold' }}>
-            Select Message Type:
-          </label>
+      <div className="bg-white p-8 rounded shadow-md text-center z-50">
+        <h1 className="text-2xl font-bold mb-4">
+          💬 Seven Tattoo Studio SMS Console
+        </h1>
+        <div className="mb-4">
+          <label className="block mb-2 font-semibold">Select Message Type:</label>
           <select
             value={selectedType}
             onChange={(e) => setSelectedType(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '.5rem',
-              borderRadius: '6px',
-              border: '1px solid #ccc',
-              marginBottom: '1rem',
-            }}
+            className="w-full p-2 border rounded"
           >
             <option>Appointment Reminder</option>
             <option>Healing Follow-up</option>
@@ -151,48 +100,26 @@ export default function Home() {
             <option>Thank You</option>
             <option>Confirmation</option>
           </select>
-
-          <label style={{ display: 'block', marginBottom: '.5rem', fontWeight: 'bold' }}>
-            Client Phone Number:
-          </label>
+        </div>
+        <div className="mb-4">
+          <label className="block mb-2 font-semibold">Client Phone Number:</label>
           <input
             type="text"
-            value={phoneNumber}
-            onChange={(e) => setPhoneNumber(e.target.value)}
             placeholder="+1XXXXXXXXXX"
-            style={{
-              width: '100%',
-              padding: '.5rem',
-              borderRadius: '6px',
-              border: '1px solid #ccc',
-              marginBottom: '1rem',
-            }}
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className="w-full p-2 border rounded"
           />
-
-          <button
-            onClick={sendSMS}
-            style={{
-              width: '100%',
-              padding: '.75rem',
-              backgroundColor: '#000',
-              color: '#fff',
-              borderRadius: '6px',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              marginBottom: '1rem',
-            }}
-          >
-            Send SMS
-          </button>
-
-          {sent && (
-            <div style={{ textAlign: 'center', color: 'green', fontWeight: 'bold' }}>
-              ✅ Message sent!
-            </div>
-          )}
         </div>
+        <button
+          onClick={sendSMS}
+          disabled={loading}
+          className="bg-black text-white px-6 py-2 rounded hover:bg-gray-800"
+        >
+          {loading ? 'Sending...' : 'Send SMS'}
+        </button>
       </div>
-    </>
+    </div>
   );
 }
 
