@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import twilio from 'twilio';
-import { supabase } from '@/utils/supabaseClient';
+import { supabase } from '../../utils/supabaseClient';
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID!;
 const authToken = process.env.TWILIO_AUTH_TOKEN!;
