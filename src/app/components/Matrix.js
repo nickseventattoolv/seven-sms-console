@@ -8,6 +8,7 @@ export default function Matrix() {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
 
+    // Resize canvas to full screen
     const resizeCanvas = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -16,15 +17,19 @@ export default function Matrix() {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    const fontSize = 16;
+    const fontSize = 22;
     const columns = Math.floor(window.innerWidth / fontSize);
     const drops = Array(columns).fill(1);
 
     const draw = () => {
+      // Trail effect background
       ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = '#0f0';
+      // Neon green settings
+      ctx.shadowColor = '#00FF00';
+      ctx.shadowBlur = 30;
+      ctx.fillStyle = '#00FF00';
       ctx.font = `${fontSize}px monospace`;
 
       for (let i = 0; i < drops.length; i++) {
@@ -42,7 +47,7 @@ export default function Matrix() {
       }
     };
 
-    const interval = setInterval(draw, 50);
+    const interval = setInterval(draw, 65);
 
     return () => {
       clearInterval(interval);
@@ -53,7 +58,16 @@ export default function Matrix() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed top-0 left-0 w-screen h-screen z-[-1]"
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        display: 'block',
+        zIndex: -1,
+        backgroundColor: '#000000',
+      }}
     />
   );
 }
