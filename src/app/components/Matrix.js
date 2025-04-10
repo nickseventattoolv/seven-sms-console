@@ -1,40 +1,40 @@
 'use client';
-
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 export default function Matrix() {
+  const canvasRef = useRef(null);
+
   useEffect(() => {
-    const canvas = document.createElement('canvas');
-    canvas.id = 'matrix';
-    canvas.style.position = 'fixed';
-    canvas.style.top = 0;
-    canvas.style.left = 0;
-    canvas.style.zIndex = -1;
-    canvas.style.pointerEvents = 'none';
-
-    document.body.appendChild(canvas);
-
+    const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
 
-    const letters = '01';
-    const fontSize = 14;
-    const columns = Math.floor(canvas.width / fontSize);
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const fontSize = 16;
+    const columns = Math.floor(window.innerWidth / fontSize);
     const drops = Array(columns).fill(1);
 
     const draw = () => {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = '#00FF00';
-      ctx.font = fontSize + 'px monospace';
+      ctx.fillStyle = '#0f0';
+      ctx.font = `${fontSize}px monospace`;
 
       for (let i = 0; i < drops.length; i++) {
-        const char = letters.charAt(Math.floor(Math.random() * letters.length));
-        ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+        const text = String.fromCharCode(33 + Math.random() * 94);
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
 
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        ctx.fillText(text, x, y);
+
+        if (y > canvas.height && Math.random() > 0.975) {
           drops[i] = 0;
         }
 
@@ -42,22 +42,19 @@ export default function Matrix() {
       }
     };
 
-    const interval = setInterval(draw, 33);
-
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    window.addEventListener('resize', handleResize);
+    const interval = setInterval(draw, 50);
 
     return () => {
       clearInterval(interval);
-      window.removeEventListener('resize', handleResize);
-      document.body.removeChild(canvas);
+      window.removeEventListener('resize', resizeCanvas);
     };
   }, []);
 
-  return null;
+  return (
+    <canvas
+      ref={canvasRef}
+      className="fixed top-0 left-0 w-screen h-screen z-[-1]"
+    />
+  );
 }
 
