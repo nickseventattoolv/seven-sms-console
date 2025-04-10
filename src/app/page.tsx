@@ -17,7 +17,7 @@ export default function Home() {
   useEffect(() => {
     const getSession = async () => {
       const { data } = await supabase.auth.getSession();
-      if (!data?.session) {
+      if (!data.session) {
         router.push('/login');
       } else {
         setUser(data.session.user);
@@ -38,6 +38,31 @@ export default function Home() {
   return (
     <>
       <Matrix />
+
+      {/* Log Out Button */}
+      <button
+        onClick={async () => {
+          await supabase.auth.signOut();
+          window.location.href = '/login';
+        }}
+        style={{
+          position: 'absolute',
+          top: 20,
+          right: 20,
+          backgroundColor: '#000',
+          color: '#fff',
+          padding: '10px 20px',
+          borderRadius: '8px',
+          fontWeight: 'bold',
+          cursor: 'pointer',
+          zIndex: 1001,
+          border: '2px solid white',
+        }}
+      >
+        Log Out
+      </button>
+
+      {/* Console Box */}
       <div
         style={{
           position: 'fixed',
