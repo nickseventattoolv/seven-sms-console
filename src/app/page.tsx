@@ -10,8 +10,8 @@ export default function Home() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [phone, setPhone] = useState('');
-  const [messageType, setMessageType] = useState('Appointment Reminder');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [selectedType, setSelectedType] = useState('Appointment Reminder');
   const [sent, setSent] = useState(false);
 
   useEffect(() => {
@@ -27,10 +27,42 @@ export default function Home() {
     getSession();
   }, [router]);
 
-  const handleSend = async () => {
-    console.log(`Sending "${messageType}" to ${phone}`);
-    setSent(true);
-    setTimeout(() => setSent(false), 3000);
+  const sendSMS = async () => {
+    if (!selectedType || !phoneNumber) return;
+
+    try {
+      const response = await fetch('/api/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: phoneNumber, type: selectedType }),
+      });
+
+      const result = await response.json();
+
+      if (result.success && user) {
+        // ✅ Log the sent message to Supabase
+        const { error } = await supabase.from('sms_logs').insert([
+          {
+            phone: phoneNumber,
+            message_type: selectedType,
+            sent_by: user.id,
+          },
+        ]);
+
+        if (error) {
+          console.error('Supabase log error:', error.message);
+        } else {
+          console.log('📩 SMS log saved to Supabase');
+        }
+
+        setSent(true);
+        setTimeout(() => setSent(false), 3000);
+      } else {
+        console.error('Twilio send failed:', result.error);
+      }
+    } catch (err) {
+      console.error('Error sending SMS:', err);
+    }
   };
 
   if (loading) return null;
@@ -103,8 +135,8 @@ export default function Home() {
             Select Message Type:
           </label>
           <select
-            value={messageType}
-            onChange={(e) => setMessageType(e.target.value)}
+            value={selectedType}
+            onChange={(e) => setSelectedType(e.target.value)}
             style={{
               width: '100%',
               padding: '.5rem',
@@ -125,8 +157,8 @@ export default function Home() {
           </label>
           <input
             type="text"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
             placeholder="+1XXXXXXXXXX"
             style={{
               width: '100%',
@@ -138,7 +170,7 @@ export default function Home() {
           />
 
           <button
-            onClick={handleSend}
+            onClick={sendSMS}
             style={{
               width: '100%',
               padding: '.75rem',
