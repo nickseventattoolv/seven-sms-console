@@ -4,10 +4,11 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../utils/supabaseClient';
 import Matrix from './components/Matrix.js';
+import type { User } from '@supabase/supabase-js';
 
 export default function Home() {
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [phone, setPhone] = useState('');
   const [messageType, setMessageType] = useState('Appointment Reminder');
@@ -15,7 +16,7 @@ export default function Home() {
 
   useEffect(() => {
     const getSession = async () => {
-      const { data, error } = await supabase.auth.getSession();
+      const { data } = await supabase.auth.getSession();
       if (!data?.session) {
         router.push('/login');
       } else {
