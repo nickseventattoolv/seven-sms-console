@@ -1,14 +1,15 @@
-'use client';
+"use client";
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../utils/supabaseClient';
+import type { User } from '@supabase/supabase-js';
 
 export default function Home() {
   const [selectedType, setSelectedType] = useState('Appointment Reminder');
   const [phone, setPhone] = useState('');
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
   useEffect(() => {
