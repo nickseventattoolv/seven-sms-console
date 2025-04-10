@@ -5,13 +5,12 @@ import { createClient } from '@supabase/supabase-js';
 import '../../styles/matrix.css';
 
 const supabaseUrl = 'https://hfriuxbaqsudyyuywtzr.supabase.co';
-const supabaseKey = 'YOUR_ANON_KEY'; // <-- Replace with your actual anon key
+const supabaseKey = 'YOUR_ANON_KEY';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function DashboardPage() {
-  const [phone, setPhone] = useState('');
-  const [template, setTemplate] = useState('Appointment Reminder');
-  const [status, setStatus] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     const canvas = document.getElementById('matrix-canvas') as HTMLCanvasElement;
@@ -42,77 +41,43 @@ export default function DashboardPage() {
     return () => clearInterval(interval);
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus('');
-
-    if (!phone) {
-      setStatus('❌ Please enter a phone number.');
-      return;
-    }
-
-    try {
-      const { error } = await supabase.from('messages').insert([
-        {
-          phone,
-          message_type: template,
-          sent_at: new Date().toISOString(),
-          sender_id: 'system-user', // Replace if using auth
-        },
-      ]);
-
-      if (error) {
-        console.error(error);
-        setStatus('❌ Failed to log message.');
-      } else {
-        setStatus('✅ Message sent and logged!');
-        setPhone('');
-      }
-    } catch (err) {
-      console.error(err);
-      setStatus('❌ Something went wrong.');
-    }
+    console.log('Login with', email, password);
   };
 
   return (
     <div className="matrix">
       <canvas id="matrix-canvas"></canvas>
-
       <div className="matrix-content flex items-center justify-center min-h-screen px-4 text-white relative">
         <form
-          onSubmit={handleSubmit}
-          className="w-full max-w-md space-y-4 bg-white/10 backdrop-blur-md p-6 rounded-xl border border-green-500 shadow-lg"
+          onSubmit={handleLogin}
+          className="w-full max-w-sm bg-white/10 backdrop-blur-md p-6 rounded-xl border border-green-500 shadow-lg"
         >
-          <h1 className="text-2xl font-bold text-center text-green-400">🟢 Send Appointment Reminder</h1>
-
-          <select
-            value={template}
-            onChange={(e) => setTemplate(e.target.value)}
-            className="w-full p-2 rounded text-black"
-          >
-            <option>Appointment Reminder</option>
-            <option>Follow-Up</option>
-            <option>Re-Engagement</option>
-          </select>
+          <h1 className="text-2xl font-bold text-center text-green-400 mb-4">Login to Seven SMS Console</h1>
 
           <input
-            type="text"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            placeholder="+1 (___) ___ - ____"
-            className="w-full p-2 rounded text-black"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            className="w-full mb-3 p-2 rounded text-black placeholder-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
+          />
+
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            className="w-full mb-4 p-2 rounded text-black placeholder-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
           />
 
           <button
             type="submit"
             className="w-full p-2 bg-green-500 hover:bg-green-600 text-black font-bold rounded transition"
           >
-            Send SMS
+            Log In
           </button>
-
-          {status && (
-            <p className="text-center text-green-300 text-sm">{status}</p>
-          )}
         </form>
       </div>
     </div>
