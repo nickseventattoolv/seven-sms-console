@@ -21,7 +21,7 @@ export default function LoginPage() {
     }
   };
 
-  // Matrix background animation
+  // Matrix animation
   useEffect(() => {
     const canvas = document.getElementById('matrixCanvas') as HTMLCanvasElement;
     const ctx = canvas.getContext('2d')!;
@@ -56,35 +56,40 @@ export default function LoginPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-black relative overflow-hidden">
-      {/* Matrix Canvas Background */}
+      {/* Matrix background canvas */}
       <canvas id="matrixCanvas" className="absolute inset-0 z-0 pointer-events-none" />
 
-      {/* Login Card */}
-      <Card className="w-full max-w-md z-10 bg-black/60 border border-green-400 backdrop-blur-md shadow-xl">
-        <CardContent className="flex flex-col space-y-5 p-6">
-          <h2 className="text-2xl font-bold text-center text-green-300">Login</h2>
-          <Input 
-            type="email" 
-            placeholder="Email" 
-            className="bg-black/70 border border-green-400 text-green-200 placeholder-green-400"
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-          />
-          <Input 
-            type="password" 
-            placeholder="Password" 
-            className="bg-black/70 border border-green-400 text-green-200 placeholder-green-400"
-            value={password} 
-            onChange={(e) => setPassword(e.target.value)} 
-          />
-          <Button 
-            onClick={handleLogin} 
-            className="w-full bg-green-500 hover:bg-green-400 text-black font-semibold"
-          >
-            Log In
-          </Button>
-        </CardContent>
-      </Card>
+      {/* Login form container */}
+      <div className="relative z-10 w-[90%] max-w-md">
+        <Card className="bg-black/70 border border-green-400 backdrop-blur-md shadow-lg">
+          <CardContent className="flex flex-col space-y-5 p-6">
+            <h2 className="text-2xl font-bold text-center text-green-300">Login</h2>
+
+            <Input
+              type="email"
+              placeholder="Email"
+              className="bg-black/70 border border-green-400 text-green-200 placeholder-green-400"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+
+            <Input
+              type="password"
+              placeholder="Password"
+              className="bg-black/70 border border-green-400 text-green-200 placeholder-green-400"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+
+            <Button
+              onClick={handleLogin}
+              className="w-full bg-green-500 hover:bg-green-400 text-black font-semibold"
+            >
+              Log In
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
