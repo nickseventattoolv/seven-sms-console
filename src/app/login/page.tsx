@@ -29,12 +29,12 @@ export default function LoginPage() {
     canvas.width = window.innerWidth;
 
     const letters = '01'.split('');
-    const fontSize = 14;
+    const fontSize = 11;
     const columns = canvas.width / fontSize;
     const drops: number[] = Array(Math.floor(columns)).fill(1);
 
     const draw = () => {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.07)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = '#0F0';
       ctx.font = fontSize + 'px monospace';
@@ -54,43 +54,40 @@ export default function LoginPage() {
     return () => clearInterval(interval);
   }, []);
 
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-black relative overflow-hidden">
-      {/* Matrix background canvas */}
-      <canvas id="matrixCanvas" className="absolute inset-0 z-0 pointer-events-none" />
+return (
+  <div className="flex items-center justify-center min-h-screen bg-black relative overflow-hidden">
+    {/* Matrix Canvas */}
+    <canvas id="matrixCanvas" className="absolute inset-0 z-0 pointer-events-none" />
 
-      {/* Login form container */}
-      <div className="relative z-10 w-[60%] max-w-md">
-        <Card className="bg-white">
-          <CardContent className="flex flex-col space-y-5 p-6">
-            <h2 className="text-2xl font-bold text-center text-green-200">Login</h2>
+    {/* Solid Login Box */}
+    <div className="relative z-10 w-[90%] max-w-md">
+      <div className="bg-white border border-green-500 shadow-xl rounded-2xl p-6">
+        <h2 className="text-2xl font-bold text-center text-black mb-4">Login</h2>
 
-            <Input
-              type="email"
-              placeholder="Email"
-              className="bg-black/70 border border-green-400 text-green-200 placeholder-green-400"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded bg-white text-black mb-3"
+        />
 
-            <Input
-              type="password"
-              placeholder="Password"
-              className="bg-black/70 border border-green-400 text-green-200 placeholder-green-400"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full p-2 border border-gray-300 rounded bg-white text-black mb-4"
+        />
 
-            <Button
-              onClick={handleLogin}
-              className="w-full bg-green-500 hover:bg-green-400 text-black font-semibold"
-            >
-              Log In
-            </Button>
-          </CardContent>
-        </Card>
+        <button
+          onClick={handleLogin}
+          className="w-full bg-green-500 hover:bg-green-400 text-black font-semibold py-2 rounded"
+        >
+          Log In
+        </button>
       </div>
     </div>
-  );
-}
+  </div>
+);
 
