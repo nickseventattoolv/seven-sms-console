@@ -66,10 +66,10 @@ export default function LoginPage() {
   }, []);
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden bg-black">
+    <div className="relative h-screen w-screen overflow-hidden bg-black text-white">
       <canvas id="matrixCanvas" className="absolute inset-0 z-0 opacity-100" />
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 flex items-center justify-center px-4">
-        <div className="bg-black/70 backdrop-blur-sm p-10 rounded-xl w-full max-w-md shadow-2xl border border-green-500/30">
+        <div className="bg-black/70 backdrop-blur-md p-10 rounded-xl w-full max-w-md shadow-2xl border border-green-500/30">
           <h2 className="text-2xl font-bold mb-6 text-green-300 text-center bg-white/10 px-4 py-2 rounded-md inline-block shadow-sm">
             Login to Seven SMS Console
           </h2>
