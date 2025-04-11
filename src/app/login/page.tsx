@@ -63,12 +63,40 @@ export default function LoginPage() {
         window.removeEventListener('resize', resizeCanvas);
       };
     }
-  }, []);
+  }, []); // 🔒 Closed useEffect here!
 
   return (
     <div className="relative h-screen w-screen bg-black overflow-hidden">
       <canvas id="matrixCanvas" className="absolute inset-0 z-0 w-full h-full" />
       
       <div className="relative z-10 flex items-center justify-center h-full px-4">
-        <div className="bg-black/90 backdrop-blur
+        <div className="bg-black/90 backdrop-blur-sm p-8 rounded-lg border border-green-500 shadow-2xl w-full max-w-sm text-white">
+          <h1 className="text-2xl font-bold text-center mb-6">
+            💬 Seven Tattoo Studio SMS Console
+          </h1>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full mb-4 px-4 py-2 bg-black border border-green-500 text-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full mb-6 px-4 py-2 bg-black border border-green-500 text-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+          />
+          <button
+            onClick={handleLogin}
+            className="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-2 rounded-md border border-white transition-colors"
+          >
+            Log In
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
