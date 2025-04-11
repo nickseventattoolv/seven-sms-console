@@ -3,6 +3,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/utils/supabaseClient';
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -20,29 +23,14 @@ export default function LoginPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-black">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm text-center">
-        <h2 className="text-xl font-bold mb-4">Login to Seven SMS Console</h2>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full p-2 mb-3 border rounded"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full p-2 mb-3 border rounded"
-        />
-        <button
-          onClick={handleLogin}
-          className="bg-black text-white w-full py-2 rounded hover:bg-gray-800"
-        >
-          Log In
-        </button>
-      </div>
+      <Card className="w-full max-w-sm p-4 bg-white">
+        <CardContent className="flex flex-col space-y-4">
+          <h2 className="text-xl font-bold text-center">Login</h2>
+          <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <Button onClick={handleLogin} className="w-full">Log In</Button>
+        </CardContent>
+      </Card>
     </div>
   );
 }
