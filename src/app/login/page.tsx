@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/utils/supabaseClient';
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -21,14 +21,68 @@ export default function LoginPage() {
     }
   };
 
+  // Matrix background animation
+  useEffect(() => {
+    const canvas = document.getElementById('matrixCanvas') as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d')!;
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    const letters = '01'.split('');
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops: number[] = Array(Math.floor(columns)).fill(1);
+
+    const draw = () => {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#0F0';
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    };
+
+    const interval = setInterval(draw, 33);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-black">
-      <Card className="w-full max-w-sm p-4 bg-white">
-        <CardContent className="flex flex-col space-y-4">
-          <h2 className="text-xl font-bold text-center">Login</h2>
-          <Input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <Input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          <Button onClick={handleLogin} className="w-full">Log In</Button>
+    <div className="flex items-center justify-center min-h-screen bg-black relative overflow-hidden">
+      {/* Matrix Canvas Background */}
+      <canvas id="matrixCanvas" className="absolute inset-0 z-0 pointer-events-none" />
+
+      {/* Login Card */}
+      <Card className="w-full max-w-md z-10 bg-black/60 border border-green-400 backdrop-blur-md shadow-xl">
+        <CardContent className="flex flex-col space-y-5 p-6">
+          <h2 className="text-2xl font-bold text-center text-green-300">Login</h2>
+          <Input 
+            type="email" 
+            placeholder="Email" 
+            className="bg-black/70 border border-green-400 text-green-200 placeholder-green-400"
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+          />
+          <Input 
+            type="password" 
+            placeholder="Password" 
+            className="bg-black/70 border border-green-400 text-green-200 placeholder-green-400"
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+          />
+          <Button 
+            onClick={handleLogin} 
+            className="w-full bg-green-500 hover:bg-green-400 text-black font-semibold"
+          >
+            Log In
+          </Button>
         </CardContent>
       </Card>
     </div>
