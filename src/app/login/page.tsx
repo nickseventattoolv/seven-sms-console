@@ -60,10 +60,10 @@ export default function LoginPage() {
       <canvas id="matrixCanvas" className="absolute inset-0 z-0 pointer-events-none" />
 
       {/* Login form container */}
-      <div className="relative z-10 w-[90%] max-w-md">
-        <Card className="bg-black/70 border border-green-400 backdrop-blur-md shadow-lg">
+      <div className="relative z-10 w-[60%] max-w-md">
+        <Card className="bg-black/40 border border-green-300 backdrop-blur-md shadow-lg">
           <CardContent className="flex flex-col space-y-5 p-6">
-            <h2 className="text-2xl font-bold text-center text-green-300">Login</h2>
+            <h2 className="text-2xl font-bold text-center text-green-200">Login</h2>
 
             <Input
               type="email"
