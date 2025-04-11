@@ -34,7 +34,7 @@ export default function LoginPage() {
       const draw = () => {
         ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#0F0';
+        ctx.fillStyle = 'rgba(0, 255, 0, 0.8)'; // Reduced green intensity
         ctx.font = fontSize + 'px monospace';
 
         for (let i = 0; i < drops.length; i++) {
@@ -52,9 +52,9 @@ export default function LoginPage() {
 
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-black">
-      <canvas id="matrixCanvas" className="absolute inset-0 z-0 opacity-70" />
+      <canvas id="matrixCanvas" className="absolute inset-0 z-0 opacity-60" />
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 flex items-center justify-center">
-        <div className="bg-white/10 backdrop-blur-md p-8 rounded-xl shadow-lg w-full max-w-md">
+        <div className="bg-white/10 backdrop-blur-md p-8 rounded-xl shadow-2xl w-full max-w-md border border-white/20">
           <h2 className="text-2xl font-bold mb-6 text-white text-center">Login to Seven SMS Console</h2>
           <input
             type="email"
@@ -81,5 +81,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
-
