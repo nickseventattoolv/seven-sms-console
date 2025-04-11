@@ -52,27 +52,27 @@ export default function LoginPage() {
 
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-black">
-      <canvas id="matrixCanvas" className="absolute inset-0 z-0" />
-      <div className="absolute inset-0 flex items-center justify-center z-10">
-        <div className="bg-white bg-opacity-90 p-6 rounded-lg shadow-lg w-full max-w-sm text-center">
-          <h2 className="text-xl font-bold mb-4">Login to Seven SMS Console</h2>
+      <canvas id="matrixCanvas" className="absolute inset-0 z-0 opacity-70" />
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 flex items-center justify-center">
+        <div className="bg-white/10 backdrop-blur-md p-8 rounded-xl shadow-lg w-full max-w-md">
+          <h2 className="text-2xl font-bold mb-6 text-white text-center">Login to Seven SMS Console</h2>
           <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 mb-3 border rounded"
+            className="w-full p-3 mb-4 border border-gray-700 rounded-md bg-black/20 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 mb-3 border rounded"
+            className="w-full p-3 mb-6 border border-gray-700 rounded-md bg-black/20 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
           />
           <button
             onClick={handleLogin}
-            className="bg-black text-white w-full py-2 rounded hover:bg-gray-800"
+            className="bg-green-500 hover:bg-green-600 text-white w-full py-3 rounded-md transition-colors duration-200"
           >
             Log In
           </button>
@@ -81,4 +81,5 @@ export default function LoginPage() {
     </div>
   );
 }
+
 
