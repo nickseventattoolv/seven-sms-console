@@ -61,7 +61,7 @@ export default function LoginPage() {
 
       {/* Login form container */}
       <div className="relative z-10 w-[60%] max-w-md">
-        <Card className="bg-white/40 border border-green-300 backdrop-blur-md shadow-lg">
+        <Card className="bg-white/40 border border-green-300 shadow-lg">
           <CardContent className="flex flex-col space-y-5 p-6">
             <h2 className="text-2xl font-bold text-center text-green-200">Login</h2>
 
