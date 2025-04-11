@@ -68,28 +68,26 @@ export default function LoginPage() {
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-black">
       <canvas id="matrixCanvas" className="absolute inset-0 w-full h-full z-0" />
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 flex items-center justify-center px-4 w-full">
-        <div className="bg-black/70 backdrop-blur-md p-10 rounded-xl w-full max-w-md shadow-2xl border border-green-500/30">
-          <h2 className="text-2xl font-bold mb-6 text-white text-center bg-white/10 px-4 py-2 rounded-md inline-block shadow-sm">
-            Login to Seven SMS Console
-          </h2>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 px-4">
+        <div className="max-w-sm mx-auto p-6 bg-black/80 rounded-lg border border-green-500 shadow-xl text-white">
+          <h1 className="text-2xl font-bold text-center mb-6">💬 Seven Tattoo Studio SMS Console</h1>
           <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-3 mb-4 rounded-md bg-black/40 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 shadow-inner"
+            className="w-full mb-4 px-4 py-2 bg-black border border-green-500 text-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 mb-6 rounded-md bg-black/40 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 shadow-inner"
+            className="w-full mb-6 px-4 py-2 bg-black border border-green-500 text-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
           />
           <button
             onClick={handleLogin}
-            className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-md transition-colors duration-200 font-semibold shadow-md"
+            className="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-2 rounded-md border border-white"
           >
             Log In
           </button>
