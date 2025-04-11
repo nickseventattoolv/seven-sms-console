@@ -52,8 +52,6 @@ export default function LoginPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-black relative overflow-hidden">
-      {/* Matrix Canvas */}
-      <canvas id="matrixCanvas" className="absolute inset-0 z-0 pointer-events-none" />
 
       {/* Solid Login Box */}
       <div className="relative z-10 w-[90%] max-w-md">
