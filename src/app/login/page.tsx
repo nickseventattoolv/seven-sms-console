@@ -22,7 +22,7 @@ export default function LoginPage() {
     const canvas = document.getElementById('matrixCanvas') as HTMLCanvasElement;
     const ctx = canvas?.getContext('2d');
 
-    const handleResize = () => {
+    const resizeCanvas = () => {
       if (canvas) {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -30,8 +30,8 @@ export default function LoginPage() {
     };
 
     if (canvas && ctx) {
-      handleResize();
-      window.addEventListener('resize', handleResize);
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
 
       const letters = '0123456789ABCDEF';
       const fontSize = 14;
@@ -60,17 +60,17 @@ export default function LoginPage() {
 
       return () => {
         clearInterval(interval);
-        window.removeEventListener('resize', handleResize);
+        window.removeEventListener('resize', resizeCanvas);
       };
     }
   }, []);
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden bg-black text-white">
-      <canvas id="matrixCanvas" className="absolute inset-0 z-0 opacity-100" />
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 flex items-center justify-center px-4">
+    <div className="relative h-screen w-screen overflow-hidden bg-black">
+      <canvas id="matrixCanvas" className="absolute inset-0 w-full h-full z-0" />
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 flex items-center justify-center px-4 w-full">
         <div className="bg-black/70 backdrop-blur-md p-10 rounded-xl w-full max-w-md shadow-2xl border border-green-500/30">
-          <h2 className="text-2xl font-bold mb-6 text-green-300 text-center bg-white/10 px-4 py-2 rounded-md inline-block shadow-sm">
+          <h2 className="text-2xl font-bold mb-6 text-white text-center bg-white/10 px-4 py-2 rounded-md inline-block shadow-sm">
             Login to Seven SMS Console
           </h2>
           <input
@@ -89,7 +89,7 @@ export default function LoginPage() {
           />
           <button
             onClick={handleLogin}
-            className="bg-green-500 hover:bg-green-600 text-white w-full py-3 rounded-md transition-colors duration-200 font-semibold shadow-md"
+            className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-md transition-colors duration-200 font-semibold shadow-md"
           >
             Log In
           </button>
