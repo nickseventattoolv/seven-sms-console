@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
-import '../../styles/matrix.css';
 
 const supabaseUrl = 'https://hfriuxbaqsudyyuywtzr.supabase.co';
 const supabaseKey = 'YOUR_ANON_KEY';
