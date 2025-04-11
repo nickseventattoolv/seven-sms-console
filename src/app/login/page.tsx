@@ -1,6 +1,4 @@
 'use client';
-
-import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/utils/supabaseClient';
 
@@ -20,7 +18,6 @@ export default function LoginPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-black relative overflow-hidden">
-      <canvas id="matrixCanvas" className="absolute inset-0 z-0 pointer-events-none" />
       <div className="relative z-10 w-[90%] max-w-md">
         <div className="bg-white border border-green-500 shadow-xl rounded-2xl p-6">
           <h2 className="text-2xl font-bold text-center text-black mb-4">Login</h2>
