@@ -32,7 +32,7 @@ export default function LoginPage() {
       const drops: number[] = Array(columns).fill(1);
 
       const draw = () => {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.95)';  // Darker background, almost black
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         for (let i = 0; i < drops.length; i++) {
@@ -53,10 +53,10 @@ export default function LoginPage() {
 
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-black">
-      <canvas id="matrixCanvas" className="absolute inset-0 z-0 opacity-70" />
+      <canvas id="matrixCanvas" className="absolute inset-0 z-0 opacity-100" /> {/* Matrix effect visible */}
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 flex items-center justify-center">
-        <div className=" p-8 rounded-xl w-full max-w-md bg-black/50 ">  {/* Added subtle background */}
-          <h2 className="text-2xl font-bold mb-6 text-white text-center">Login to Seven SMS Console</h2>
+        <div className=" p-8 rounded-xl w-full max-w-md bg-black/50 ">
+          <h2 className="text-2xl font-bold mb-6 text-white text-center bg-white/20 px-4 py-2 rounded-md inline-block">Login to Seven SMS Console</h2>  {/* Added box around title */}
           <input
             type="email"
             placeholder="Email"
@@ -82,4 +82,5 @@ export default function LoginPage() {
     </div>
   );
 }
+
 
