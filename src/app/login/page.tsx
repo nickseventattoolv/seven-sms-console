@@ -66,11 +66,13 @@ export default function LoginPage() {
   }, []);
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden bg-black">
-      <canvas id="matrixCanvas" className="absolute inset-0 w-full h-full z-0" />
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 px-4">
-        <div className="max-w-sm mx-auto p-6 bg-black/80 rounded-lg border border-green-500 shadow-xl text-white">
-          <h1 className="text-2xl font-bold text-center mb-6">💬 Seven Tattoo Studio SMS Console</h1>
+    <div className="relative h-screen w-screen overflow-hidden bg-black text-white">
+      <canvas id="matrixCanvas" className="absolute inset-0 z-0" />
+      <div className="absolute inset-0 z-10 flex items-center justify-center px-4">
+        <div className="bg-black/90 backdrop-blur-sm p-8 rounded-lg border border-green-500 shadow-2xl w-full max-w-sm">
+          <h1 className="text-2xl font-bold text-center mb-6">
+            💬 Seven Tattoo Studio SMS Console
+          </h1>
           <input
             type="email"
             placeholder="Email"
@@ -87,7 +89,7 @@ export default function LoginPage() {
           />
           <button
             onClick={handleLogin}
-            className="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-2 rounded-md border border-white"
+            className="w-full bg-green-500 hover:bg-green-600 text-black font-bold py-2 rounded-md border border-white transition-colors"
           >
             Log In
           </button>
