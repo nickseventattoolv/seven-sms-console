@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/utils/supabaseClient';
 
@@ -18,69 +18,30 @@ export default function LoginPage() {
     }
   };
 
-  useEffect(() => {
-    const canvas = document.getElementById('matrixCanvas') as HTMLCanvasElement;
-    const ctx = canvas.getContext('2d')!;
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
-
-    const letters = '01'.split('');
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
-    const drops: number[] = Array(Math.floor(columns)).fill(1);
-
-    const draw = () => {
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#0F0';
-      ctx.font = fontSize + 'px monospace';
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      }
-    };
-
-    const interval = setInterval(draw, 33);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
-    <div className="flex items-center justify-center min-h-screen bg-black relative overflow-hidden">
-
-      {/* Solid Login Box */}
-      <div className="relative z-10 w-[90%] max-w-md">
-        <div className="bg-white border border-green-500 shadow-xl rounded-2xl p-6">
-          <h2 className="text-2xl font-bold text-center text-black mb-4">Login</h2>
-
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded bg-white text-black mb-3"
-          />
-
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded bg-white text-black mb-4"
-          />
-
-          <button
-            onClick={handleLogin}
-            className="w-full bg-green-500 hover:bg-green-400 text-black font-semibold py-2 rounded"
-          >
-            Log In
-          </button>
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-black text-white">
+      <div className="bg-white bg-opacity-10 p-8 rounded-lg shadow-md max-w-sm w-full">
+        <h1 className="text-xl font-bold text-center mb-4">Login to Seven SMS Console</h1>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full p-2 mb-3 border border-gray-300 rounded text-black"
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full p-2 mb-4 border border-gray-300 rounded text-black"
+        />
+        <button
+          onClick={handleLogin}
+          className="w-full bg-white text-black py-2 rounded hover:bg-gray-200"
+        >
+          Log In
+        </button>
       </div>
     </div>
   );
