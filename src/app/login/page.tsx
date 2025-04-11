@@ -26,8 +26,8 @@ export default function LoginPage() {
       canvas.height = window.innerHeight;
       canvas.width = window.innerWidth;
 
-      const letters = '0123456789ABCDEF'; // More characters
-      const fontSize = 14; // Smaller font size
+      const letters = '0123456789ABCDEF';
+      const fontSize = 14;
       const columns = Math.floor(canvas.width / fontSize);
       const drops: number[] = Array(columns).fill(1);
 
@@ -37,16 +37,16 @@ export default function LoginPage() {
 
         for (let i = 0; i < drops.length; i++) {
           const text = letters[Math.floor(Math.random() * letters.length)];
-          const color = Math.random() < 0.1 ? 'rgba(100, 255, 100, 0.9)' : 'rgba(0, 255, 0, 0.75)'; // Slight color variation
+          const color = Math.random() < 0.1 ? 'rgba(100, 255, 100, 0.9)' : 'rgba(0, 255, 0, 0.75)';
           ctx.fillStyle = color;
           ctx.font = fontSize + 'px monospace';
           ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-          drops[i] += 1 + Math.random() * 2; // Varying speed
+          drops[i] += 1 + Math.random() * 2;
           if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
         }
       };
 
-      const interval = setInterval(draw, 25); // Increased speed
+      const interval = setInterval(draw, 25);
       return () => clearInterval(interval);
     }
   }, []);
@@ -55,21 +55,21 @@ export default function LoginPage() {
     <div className="relative h-screen w-screen overflow-hidden bg-black">
       <canvas id="matrixCanvas" className="absolute inset-0 z-0 opacity-70" />
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 flex items-center justify-center">
-        <div className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-md border border-white/10">
-          <h2 className="text-2xl font-bold mb-6 text-black text-center">Login to Seven SMS Console</h2>
+        <div className=" p-8 rounded-xl w-full max-w-md bg-black/50 ">  {/* Added subtle background */}
+          <h2 className="text-2xl font-bold mb-6 text-white text-center">Login to Seven SMS Console</h2>
           <input
             type="email"
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-3 mb-4 border border-gray-300 rounded-md bg-white text-black placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+            className="w-full p-3 mb-4  rounded-md bg-black/20 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 mb-6 border border-gray-300 rounded-md bg-white text-black placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+            className="w-full p-3 mb-6  rounded-md bg-black/20 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
           />
           <button
             onClick={handleLogin}
@@ -82,5 +82,4 @@ export default function LoginPage() {
     </div>
   );
 }
-
 
