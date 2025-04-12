@@ -1,9 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { useRouter } from 'next/navigation'
+import { supabase } from '@/utils/supabaseClient'
 
 export default function HomePage() {
   const router = useRouter()
@@ -22,12 +23,25 @@ export default function HomePage() {
     else alert('Error sending message.')
   }
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    router.push('/login')
+  }
+
   return (
     <main className="min-h-screen w-full flex items-center justify-center bg-background text-foreground px-4">
-      <div className="bg-white dark:bg-card p-10 rounded-2xl shadow-xl w-full max-w-xl text-center">
-        <h1 className="text-5xl font-sans mb-4">Welcome to Seven SMS Console</h1>
-        <h2 className="text-3xl font-sans mb-8">Follow-Up Reminder</h2>
+      <div className="bg-white dark:bg-card p-10 rounded-2xl shadow-xl w-full max-w-md text-center">
+        {/* LOGOUT BUTTON */}
+        <div className="flex justify-end">
+          <Button onClick={handleLogout} variant="destructive" size="sm">
+            Logout
+          </Button>
+        </div>
 
+        <h1 className="text-5xl font-sans mb-4">Welcome to Seven SMS Console</h1>
+        <h2 className="text-3xl font-sans mb-6">Follow-Up Reminder</h2>
+
+        {/* FORM */}
         <div className="space-y-4 text-left">
           <Input
             placeholder="Enter phone number"
@@ -41,21 +55,16 @@ export default function HomePage() {
             onChange={(e) => setMessage(e.target.value)}
             className="text-lg"
           />
-          <div className="flex justify-between pt-4 gap-4">
-            <Button
-              className="w-full text-lg"
-              onClick={sendSMS}
-            >
-              Send Message
-            </Button>
-            <Button
-              className="w-full text-lg"
-              variant="secondary"
-              onClick={() => router.push('/logs')}
-            >
-              View Message Logs
-            </Button>
-          </div>
+          <Button onClick={sendSMS} className="w-full text-lg">
+            Send Message
+          </Button>
+          <Button
+            onClick={() => router.push('/logs')}
+            variant="secondary"
+            className="w-full text-lg"
+          >
+            View Message Logs
+          </Button>
         </div>
       </div>
     </main>
