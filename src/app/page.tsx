@@ -4,68 +4,62 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { supabase } from '@/utils/supabaseClient'
+import { useSupabase } from '@/utils/supabaseClient'
 
 export default function HomePage() {
-  const router = useRouter()
   const [phone, setPhone] = useState('')
   const [message, setMessage] = useState('')
+  const router = useRouter()
+  const supabase = useSupabase()
 
-  const sendSMS = async () => {
-    if (!phone || !message) return alert('Phone and message required')
-    const res = await fetch('/api/send', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone, message }),
-    })
-    const data = await res.json()
-    if (data.success) alert('Message sent!')
-    else alert('Error sending message.')
+  const sendSMS = () => {
+    if (!phone || !message) return alert('Phone number and message required')
+    console.log('Sending message:', { phone, message })
+    // Your Twilio logic would go here
   }
 
-  const handleLogout = async () => {
+  const logout = async () => {
     await supabase.auth.signOut()
     router.push('/login')
   }
 
   return (
-    <main className="min-h-screen w-full flex items-center justify-center bg-background text-foreground px-4">
-      <div className="bg-white dark:bg-card p-10 rounded-2xl shadow-xl w-full max-w-md text-center">
-        {/* LOGOUT BUTTON */}
-        <div className="flex justify-end">
-          <Button onClick={handleLogout} variant="destructive" size="sm">
-            Logout
-          </Button>
-        </div>
+    <main className="min-h-screen flex flex-col items-center justify-center px-4 py-10 text-center font-sans">
+      <h1 className="text-4xl md:text-5xl font-bold mb-4">WELCOME TO SEVEN SMS CONSOLE</h1>
+      <p className="text-lg md:text-xl mb-8">
+        Easily send follow-ups, reminders, and thank you messages to clients — all in one place.
+      </p>
 
-        <h1 className="text-5xl font-sans mb-4">Welcome to Seven SMS Console</h1>
-        <h2 className="text-3xl font-sans mb-6">Follow-Up Reminder</h2>
-
-        {/* FORM */}
-        <div className="space-y-4 text-left">
-          <Input
-            placeholder="Enter phone number"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            className="text-lg"
-          />
-          <Input
-            placeholder="Enter message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className="text-lg"
-          />
-          <Button onClick={sendSMS} className="w-full text-lg">
-            Send Message
-          </Button>
-          <Button
-            onClick={() => router.push('/logs')}
-            variant="secondary"
-            className="w-full text-lg"
-          >
-            View Message Logs
-          </Button>
-        </div>
+      <div className="flex flex-col items-center gap-4 max-w-sm w-full mx-auto">
+        <Input
+          placeholder="Enter phone number"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          className="text-base"
+        />
+        <Input
+          placeholder="Enter message"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          className="text-base"
+        />
+        <Button onClick={sendSMS} className="text-base w-full">
+          Send Message
+        </Button>
+        <Button
+          onClick={() => router.push('/logs')}
+          variant="secondary"
+          className="text-base w-full"
+        >
+          View Message Logs
+        </Button>
+        <Button
+          variant="ghost"
+          onClick={logout}
+          className="text-sm text-muted-foreground underline mt-4"
+        >
+          Log Out
+        </Button>
       </div>
     </main>
   )
